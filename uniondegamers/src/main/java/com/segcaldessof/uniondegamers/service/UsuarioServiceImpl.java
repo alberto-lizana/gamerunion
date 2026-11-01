@@ -5,13 +5,12 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.segcaldessof.uniondegamers.dto.RolResponseDto;
 import com.segcaldessof.uniondegamers.dto.UsuarioRequestDto;
 import com.segcaldessof.uniondegamers.dto.UsuarioResponseDto;
-import com.segcaldessof.uniondegamers.dto.UsuarioRolResponseDto;
 import com.segcaldessof.uniondegamers.enums.RolEnum;
 import com.segcaldessof.uniondegamers.exception.RolNoEncontradoException;
 import com.segcaldessof.uniondegamers.exception.UsuarioNoEncontradoException;
+import com.segcaldessof.uniondegamers.mappers.UsuarioMapper;
 import com.segcaldessof.uniondegamers.model.Rol;
 import com.segcaldessof.uniondegamers.model.Usuario;
 import com.segcaldessof.uniondegamers.model.UsuarioRol;
@@ -43,13 +42,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Transactional(readOnly = true)
     @Override
     public List<UsuarioResponseDto> obtenerTodos() {
-        return usuarioRepository.findAllConRoles().stream().map(this::toDto).toList();
+        return usuarioRepository.findAllConRoles()
+            .stream()
+            .map(UsuarioMapper::toDto)
+            .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public UsuarioResponseDto obtenerPorId(Long id) {
-        return toDto(usuarioRepository.findByIdUsuario(id)
+        return UsuarioMapper.toDto(usuarioRepository.findByIdUsuario(id)
             .orElseThrow(() -> new UsuarioNoEncontradoException("No se ha encontrado al usuario")));
     }
 
@@ -62,7 +64,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Usuario nuevoUsuario = Usuario
             .builder()
-                .alias(dto.alias())
+                .username(dto.username())
                 .password(passwordConfig.passwordEncoder().encode(dto.password()))
                 .nombre(dto.nombre())
                 .appat(dto.appat())
@@ -79,7 +81,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         
         usuarioRolRepository.save(asignacion);
 
-        return toDto(nuevoUsuario);
+        return UsuarioMapper.toDto(nuevoUsuario);
     }
 
 
@@ -91,7 +93,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         
         response.setIsActive(false);
         
-        return toDto(response);
+        return UsuarioMapper.toDto(response);
     }
 
     @Transactional
@@ -100,36 +102,5 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuarioRepository.deleteByIdUsuario(id) == 0) {
             throw new UsuarioNoEncontradoException("No se ha encontrado al usuario con el id %s".formatted(id));
         }
-    }
-
-    private UsuarioResponseDto toDto(Usuario usuario){
-        return UsuarioResponseDto
-            .builder()
-                .id(usuario.getId())
-                .alias(usuario.getAlias())
-                .nombre(usuario.getNombre())
-                .appat(usuario.getAppat())
-                .email(usuario.getEmail())
-                .isActive(usuario.getIsActive())
-                .asignacionesRoles(usuario.getAsignacionesRoles()
-                    .stream()
-                        .map(this::toDtoUsuarioRol)
-                    .toList())
-            .build();
-    }
-
-    private RolResponseDto toDtoRolResponseDto(Rol rol){
-        return RolResponseDto
-            .builder()
-                .idRol(rol.getId())
-                .nombre(rol.getNombre())
-            .build();
-    }
-
-    private UsuarioRolResponseDto toDtoUsuarioRol(UsuarioRol usuarioRol){
-        return UsuarioRolResponseDto
-            .builder()
-                .rol(toDtoRolResponseDto(usuarioRol.getRol()))
-            .build();
     }
 }

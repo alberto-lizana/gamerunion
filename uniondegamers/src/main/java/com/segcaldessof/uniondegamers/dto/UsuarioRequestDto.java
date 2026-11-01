@@ -9,7 +9,7 @@ public record UsuarioRequestDto(
 
     @NotBlank(message = "El nombre de usuario es obligatorio")
     @Size(min = 3, max = 50, message = "El nombre de usuario debe tener entre 3 y 50 caracteres")
-    String alias,
+    String username,
 
     @NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 10, max = 50, message = "La contraseña debe tener entre 10 y 50 caracteres")

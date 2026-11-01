@@ -12,7 +12,7 @@ import lombok.Builder;
 public record UsuarioResponseDto(
 
     Long id,
-    String alias, 
+    String username, 
     String nombre,
     String appat,
     String email,

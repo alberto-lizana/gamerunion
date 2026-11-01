@@ -41,4 +41,5 @@ public class UsuarioRolServiceImpl implements UsuarioRolService {
             throw new AsignacionesNoEncontradasException("No se han encontrado asignaciones");
         }
     }
+
 }

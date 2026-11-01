@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.segcaldessof.uniondegamers.dto.RolNombreRequestDto;
 import com.segcaldessof.uniondegamers.dto.RolResponseDto;
 import com.segcaldessof.uniondegamers.exception.RolNoEncontradoException;
+import com.segcaldessof.uniondegamers.mappers.RolMapper;
 import com.segcaldessof.uniondegamers.model.Rol;
 import com.segcaldessof.uniondegamers.repository.RolRepository;
 
@@ -23,18 +24,18 @@ public class RolServiceImpl implements RolService {
     @Transactional(readOnly = true)
     @Override
     public List<RolResponseDto> obtenerTodos() {
-        List<Rol> roles = rolRepository.findAll(); 
-
-        return roles.stream().map(this::toDto).toList();
+        return rolRepository.findAll()
+            .stream()
+            .map(RolMapper::toDto)
+            .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public RolResponseDto obtenerPorId(Long id) {
-        Rol rol = rolRepository.findById(id)
-            .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado")); 
-
-        return toDto(rol);
+        return RolMapper.toDto(rolRepository.findById(id)
+            .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado"))
+        );
     }
 
     @Transactional
@@ -45,16 +46,9 @@ public class RolServiceImpl implements RolService {
 
         rol.setNombre(dto.nombre());
 
-        return toDto(rol);
+        return RolMapper.toDto(rol);
     }
 
-    private RolResponseDto toDto(Rol rol) {
-        return RolResponseDto
-            .builder()
-                .idRol(rol.getId())
-                .nombre(rol.getNombre())
-            .build();
-    }
 
     @Override
     public void eliminar(Long id) {

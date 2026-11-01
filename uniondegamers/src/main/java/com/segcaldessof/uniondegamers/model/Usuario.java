@@ -2,6 +2,7 @@ package com.segcaldessof.uniondegamers.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.segcaldessof.uniondegamers.enums.RolEnum;
 
 import jakarta.persistence.Column;
@@ -32,10 +33,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 50)
-    private String alias; 
+    @Column(nullable = false, unique = true)
+    private String username; 
 
-    @Column(nullable = false, length = 50)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false, length = 255)
     private String password;
 
     @Column(nullable = false, length = 50)

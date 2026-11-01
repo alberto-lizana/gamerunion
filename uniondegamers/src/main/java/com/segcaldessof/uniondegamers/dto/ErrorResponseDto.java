@@ -14,6 +14,7 @@ public record ErrorResponseDto(
     String mensaje,
     List<String> errores,
     Integer status,
-    LocalDateTime timestamp
+    LocalDateTime timestamp,
+    String path
 
 ) {}

@@ -7,14 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.segcaldessof.uniondegamers.dto.ErrorResponseDto;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ErrorResponseDto> handleIllegalState(IllegalStateException ex) {
+    public ResponseEntity<ErrorResponseDto> handleIllegalState(HttpServletRequest request, IllegalStateException ex) {
 
         ErrorResponseDto errResponse = ErrorResponseDto
             .builder()
@@ -22,13 +26,14 @@ public class GlobalExceptionHandler {
                 .errores(List.of(ex.getMessage()))
                 .status(HttpStatus.CONFLICT.value())
                 .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
             .build();
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDto> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponseDto> handleValidation(HttpServletRequest request, MethodArgumentNotValidException ex) {
 
         List<String> err = ex
                 .getBindingResult()
@@ -43,25 +48,27 @@ public class GlobalExceptionHandler {
                 .errores(err)
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
             .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errResponse);
     }
 
     @ExceptionHandler (RolNoEncontradoException.class)
-    public ResponseEntity<ErrorResponseDto> handleRolNoEncontrado(RolNoEncontradoException ex){
+    public ResponseEntity<ErrorResponseDto> handleRolNoEncontrado(HttpServletRequest request, RolNoEncontradoException ex){
         ErrorResponseDto err = ErrorResponseDto
             .builder()
                 .mensaje("Rol no encontrado")
                 .errores(List.of(ex.getMessage()))
                 .status(HttpStatus.CONFLICT.value())
                 .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
             .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
     
     @ExceptionHandler({NoHandlerFoundException.class})
-    public ResponseEntity<ErrorResponseDto> handleNotFound(NoHandlerFoundException ex) {
+    public ResponseEntity<ErrorResponseDto> handleNotFound(HttpServletRequest request, NoHandlerFoundException ex) {
 
         ErrorResponseDto errResponse = ErrorResponseDto
                                         .builder()
@@ -69,13 +76,14 @@ public class GlobalExceptionHandler {
                                             .errores(List.of(ex.getMessage()))
                                             .status(HttpStatus.NOT_FOUND.value())
                                             .timestamp(LocalDateTime.now())
+                                            .path(request.getRequestURI())
                                         .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errResponse);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleGeneralError(Exception ex) {
+    public ResponseEntity<ErrorResponseDto> handleGeneralError(HttpServletRequest request, Exception ex) {
 
         ErrorResponseDto errResponse = ErrorResponseDto
                                         .builder()
@@ -83,6 +91,7 @@ public class GlobalExceptionHandler {
                                             .errores(List.of(ex.getMessage()))
                                             .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                                             .timestamp(LocalDateTime.now())
+                                            .path(request.getRequestURI())
                                         .build();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errResponse);
@@ -90,18 +99,17 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(EmailYaExisteException.class)
-    public ResponseEntity<ErrorResponseDto> emailYaExisteException(EmailYaExisteException ex) {
+    public ResponseEntity<ErrorResponseDto> emailYaExisteException(HttpServletRequest request, EmailYaExisteException ex) {
 
         ErrorResponseDto errResponse = ErrorResponseDto.builder()
                 .mensaje("El email ya existe")
                 .errores(List.of(ex.getMessage()))
                 .status(HttpStatus.CONFLICT.value())
                 .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
                 .build();
 
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(errResponse);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errResponse);
     }
 }
 /*

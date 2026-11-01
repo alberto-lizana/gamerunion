@@ -14,6 +14,12 @@ import com.segcaldessof.uniondegamers.model.Usuario;
 @Repository 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
+    
+    Optional<Usuario> findByUsername(String username);
+    
     @Query
     ("""
         SELECT DISTINCT u

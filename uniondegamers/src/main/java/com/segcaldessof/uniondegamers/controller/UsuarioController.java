@@ -46,7 +46,8 @@ public class UsuarioController {
     
     @PatchMapping("/borrar-logico/{id}")
     ResponseEntity<UsuarioResponseDto> borrarL(@PathVariable Long id){
-        return ResponseEntity.ok().body(usuarioService.borrarLogico(id));
+        usuarioService.borrarLogico(id);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/borrar/{id}")
