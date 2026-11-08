@@ -3,12 +3,14 @@ package com.segcaldessof.uniondegamers.exception;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.segcaldessof.uniondegamers.dto.ErrorResponseDto;
 
@@ -82,20 +84,38 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errResponse);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleGeneralError(HttpServletRequest request, Exception ex) {
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleResourceNotFound(
+            HttpServletRequest request, NoResourceFoundException ex) {
 
         ErrorResponseDto errResponse = ErrorResponseDto
-                                        .builder()
-                                            .mensaje("Error interno del servidor")
-                                            .errores(List.of(ex.getMessage()))
-                                            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                                            .timestamp(LocalDateTime.now())
-                                            .path(request.getRequestURI())
-                                        .build();
+                .builder()
+                    .mensaje("Recurso no encontrado")
+                    .errores(List.of("El recurso solicitado no existe."))
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .timestamp(LocalDateTime.now())
+                    .path(request.getRequestURI())
+                .build();
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errResponse);
-    }    
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errResponse);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDto> handleGeneralError(
+            HttpServletRequest request, Exception ex) {
+
+        ErrorResponseDto errResponse = ErrorResponseDto
+                .builder()
+                    .mensaje("Error interno del servidor")
+                    .errores(List.of("Ocurrió un error inesperado."))
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .timestamp(LocalDateTime.now())
+                    .path(request.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(errResponse);
+    }  
 
 
     @ExceptionHandler(EmailYaExisteException.class)
