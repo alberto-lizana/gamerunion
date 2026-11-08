@@ -19,6 +19,17 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByUsername(String username);
     
     Optional<Usuario> findByUsername(String username);
+
+    @Query
+    ("""
+        SELECT 
+            CASE WHEN COUNT(u) > 0 
+                THEN true ELSE false END
+        FROM Usuario u
+        WHERE u.username = :username
+            OR u.email = :email
+    """)
+    boolean existenCredenciales(@Param("username") String username, @Param("email") String email);
     
     @Query
     ("""

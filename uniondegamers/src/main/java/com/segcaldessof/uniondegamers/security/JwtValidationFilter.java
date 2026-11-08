@@ -3,6 +3,7 @@ package com.segcaldessof.uniondegamers.security;
 import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.HEADER_AUTHORIZATION;
 import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.PREFIX_TOKEN;
 import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.SECRET_KEY;
+import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.CONTENT_TYPE;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -72,7 +73,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
             SecurityContextHolder.clearContext();
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
+            response.setContentType(CONTENT_TYPE);
             response.setCharacterEncoding("UTF-8");
 
             ErrorResponseDto error = ErrorResponseDto.builder()

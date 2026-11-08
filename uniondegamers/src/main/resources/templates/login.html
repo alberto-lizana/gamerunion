@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar sesión - Unión de Gamers</title>
+    <link rel="stylesheet" 
+          th:href="@{/css/login.css}">
+</head>
+    <body>
+        <div th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+
+            <title>Iniciar sesión - Unión de Gamers</title>
+
+            <main class="container d-flex align-items-center justify-content-center py-5"
+                style="min-height: 75vh;">
+
+                <style>
+
+                </style>
+
+                <div class="login-form-container">
+
+                    <div class="mb-4">
+                        <div class="text-center mb-3">
+                            <span class="badge rounded-pill text-bg-primary px-3 py-2">
+                                UNIÓN DE GAMERS
+                            </span>
+                        </div>
+
+                        <h1 class="login-heading">Bienvenido de vuelta</h1>
+
+                        <p class="login-subheading">
+                            Inicia sesión y continúa disfrutando de la comunidad.
+                        </p>
+                    </div>
+
+                    <!-- Error de autenticación -->
+                    <div class="alert alert-danger" th:if="${param.error}">
+                         Usuario o contraseña incorrectos.
+                    </div>
+
+                    <!-- Cierre de sesión -->
+                    <div class="alert alert-success" th:if="${param.logout}">
+                         Has cerrado sesión correctamente.
+                    </div>
+
+                    <form class="login-form"
+                        th:action="@{/login}"
+                        method="post">
+
+                        <!-- Usuario -->
+                        <div class="login-form-group">
+
+                            <input class="login-form-input"
+                                   type="text"
+                                   id="username"
+                                   name="username"
+                                   placeholder=" "
+                                   required>
+
+                            <label for="username">Nombre de usuario</label>
+
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="login-form-group">
+
+                            <input class="login-form-input"
+                                   type="password"
+                                   id="password"
+                                   name="password"
+                                   placeholder=" "
+                                   autocomplete="current-password"
+                                   required>
+
+                            <label for="password">Contraseña</label>
+
+                        </div>
+
+                        <!-- CSRF -->
+                        <input type="hidden"
+                               th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
+
+                        <!-- Botón -->
+                        <button type="submit" class="login-submit">
+                            INICIAR SESIÓN
+                        </button>
+
+                    </form>
+
+                    <hr class="login-divider">
+
+                    <!-- Registro -->
+                    <div class="login-register">
+                        ¿Todavía no tienes una cuenta?
+
+                        <a th:href="@{/usuarios/crear}">
+                            Regístrate aquí
+                        </a>
+                    </div>
+
+                </div>
+
+            </main>
+
+        </div>
+    </body>
+</html>

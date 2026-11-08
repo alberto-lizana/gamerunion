@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+
+<head>
+    <title>Crear evento - Unión de Gamers</title>
+</head>
+    <body>
+        <main class="container py-4">
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-8">
+
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+
+                            <h1 class="mb-4">Crear evento</h1>
+                            <form th:action="@{/eventos/crear}"
+                                  th:object="${evento}"
+                                  method="post">
+
+                                <!-- TÍTULO -->
+                                <div class="mb-3">
+
+                                    <label for="titulo" class="form-label">
+                                        Título del evento
+                                    </label>
+
+                                    <input type="text"
+                                           id="titulo"
+                                           th:field="*{titulo}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('titulo')} ? 'is-invalid' : ''"
+                                           minlength="10"
+                                           maxlength="150"
+                                           required>
+
+                                    <div class="invalid-feedback" th:errors="*{titulo}"></div>
+
+                                </div>
+
+                                <!-- FECHA DE INICIO -->
+                                <div class="mb-3">
+
+                                    <label for="fechaInicioEvento" class="form-label">
+                                        Fecha y hora de inicio
+                                    </label>
+
+                                    <input type="datetime-local"
+                                           id="fechaInicioEvento"
+                                           th:field="*{fechaInicioEvento}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('fechaInicioEvento')} ? 'is-invalid' : ''"
+                                           required>
+
+                                    <div class="invalid-feedback" th:errors="*{fechaInicioEvento}"></div>
+
+                                </div>
+
+                                <!-- FECHA DE TÉRMINO -->
+                                <div class="mb-3">
+
+                                    <label for="fechaTerminoEvento" class="form-label">
+                                        Fecha y hora de término
+                                    </label>
+
+                                    <input type="datetime-local"
+                                           id="fechaTerminoEvento"
+                                           th:field="*{fechaTerminoEvento}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('fechaTerminoEvento')} ? 'is-invalid' : ''"
+                                           required>
+
+                                    <div class="invalid-feedback" th:errors="*{fechaTerminoEvento}"></div>
+
+                                </div>
+
+                                <!-- UBICACIÓN -->
+                                <div class="mb-3">
+
+                                    <label for="ubicacion" class="form-label">
+                                        Ubicación o dirección
+                                    </label>
+
+                                    <textarea id="ubicacion"
+                                              th:field="*{ubicacion}"
+                                              class="form-control"
+                                              th:classappend="${#fields.hasErrors('ubicacion')} ? 'is-invalid' : ''"
+                                              maxlength="500"
+                                              rows="3"
+                                              required></textarea>
+
+                                    <div class="invalid-feedback" th:errors="*{ubicacion}"></div>
+
+                                </div>
+
+                                <!-- REGIÓN -->
+                                <div class="mb-4">
+
+                                    <label for="region" class="form-label">
+                                        Región
+                                    </label>
+
+                                    <select id="region"
+                                            th:field="*{region}"
+                                            class="form-select"
+                                            th:classappend="${#fields.hasErrors('region')} ? 'is-invalid' : ''"
+                                            required>
+
+                                        <option value="" disabled>
+                                            Selecciona una región
+                                        </option>
+
+                                        <option th:each="region : ${regiones}"
+                                                th:value="${region.codigo}"
+                                                th:text="${region.nombre}">
+                                        </option>
+
+                                    </select>
+
+                                    <div class="invalid-feedback" th:errors="*{region}"></div>
+
+                                </div>
+
+                                <!-- BOTONES -->
+                                <div class="d-flex justify-content-between">
+
+                                    <a th:href="@{/eventos}" class="btn btn-outline-secondary">
+                                        Cancelar
+                                    </a>
+
+                                    <button type="submit" class="btn btn-primary">
+                                        Crear evento
+                                    </button>
+                                    
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Evento - Unión de Gamers</title>
+</head>
+    <body>
+        <main class="container py-4">
+
+            <a th:href="@{/eventos}" class="text-decoration-none">&larr; Volver a eventos</a>
+
+            <div class="row g-4 mt-1">
+                
+                <div class="col-12 col-md-5">
+                    <img th:src="@{/img/gamer_union_default.jpg}" alt="Imagen del evento"
+                        class="img-fluid rounded shadow-sm">
+                </div>
+
+                <div class="col-12 col-md-7">
+
+                    <h1 class="h3" th:text="${evento.titulo}">Título</h1>
+
+                    <p class="mb-1">📅
+                        <span th:text="${#temporals.format(evento.fechaInicioEvento, 'dd/MM/yyyy')}">Fecha</span>
+                    </p>
+
+                    <p class="mb-1">🕒
+                        <span th:text="${#temporals.format(evento.fechaInicioEvento, 'HH:mm')}">Inicio</span>
+                        <span th:if="${evento.fechaTerminoEvento != null}"
+                            th:text="'- ' + ${#temporals.format(evento.fechaTerminoEvento, 'HH:mm')}">- Fin</span>
+                    </p>
+
+                    <p class="mb-1">📍 
+                        <span th:text="${evento.ubicacion}">Ubicación</span>
+                    </p>
+
+                    <p class="mb-0" th:if="${evento.region != null}">
+                        🗺️ <span th:text="${evento.region.nombreSinGuiones()}">Región</span>
+                    </p>
+
+                </div>
+            </div>
+
+            <hr class="my-4">
+            
+            <h2 class="h5">Comentarios (<span th:text="${comentarios.totalElements}">0</span>)</h2>
+
+            <div th:each="c : ${comentarios.content}">
+                <div th:replace="~{fragments/comentario :: item(${c})}"></div>
+            </div>
+
+            <p class="text-muted" th:if="${comentarios.empty}">Aún no hay comentarios.</p>
+
+            <nav th:if="${comentarios.totalPages > 1}" class="d-flex justify-content-between mt-3">
+                <a class="btn btn-outline-secondary btn-sm"
+                    th:classappend="${!comentarios.hasPrevious()} ? 'disabled'"
+                    th:href="@{/eventos/{id}(id=${evento.id}, page=${comentarios.number - 1})}">Anteriores</a>
+                <small class="text-muted align-self-center"
+                    th:text="${comentarios.number + 1} + ' / ' + ${comentarios.totalPages}">1 / 1</small>
+                <a class="btn btn-outline-secondary btn-sm"
+                    th:classappend="${!comentarios.hasNext()} ? 'disabled'"
+                    th:href="@{/eventos/{id}(id=${evento.id}, page=${comentarios.number + 1})}">Siguientes</a>
+            </nav>
+        </main>
+    </body>
+</html>

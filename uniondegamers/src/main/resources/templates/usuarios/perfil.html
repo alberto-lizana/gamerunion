@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Mi perfil</title>
+</head>
+    <body>
+
+        <main class="container py-4">
+
+            <h2 class="mb-4">Mi perfil</h2>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+
+                    <h5 class="mb-4">Información personal</h5>
+
+                    <div class="mb-3">
+                        <label class="form-label text-secondary fw-semibold small">
+                            Nombre
+                        </label>
+                        <p class="mb-0" th:text="${usuario.nombre}">Nombre</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-secondary fw-semibold small">
+                            Apellido
+                        </label>
+                        <p class="mb-0" th:text="${usuario.appat}">Apellido</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-secondary fw-semibold small">
+                            Nombre de usuario
+                        </label>
+                        <p class="mb-0" th:text="${usuario.username}">Username</p>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-secondary fw-semibold small">
+                            Correo electrónico
+                        </label>
+                        <p class="mb-0" th:text="${usuario.email}">correo@email.com</p>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="mb-3">Mis roles</h5>
+
+                    <div th:if="${!#lists.isEmpty(usuario.asignacionesRoles)}"
+                        class="d-flex flex-wrap gap-2">
+
+                        <span th:each="asignacion : ${usuario.asignacionesRoles}"
+                            class="badge text-bg-secondary px-3 py-2"
+                            th:text="${asignacion.rol.nombre}">
+                            ROLE_USUARIO
+                        </span>
+
+                    </div>
+
+                    <p th:if="${#lists.isEmpty(usuario.asignacionesRoles)}"
+                    class="text-muted mb-0">
+                        No tienes roles asignados.
+                    </p>
+
+                </div>
+            </div>
+
+        </main>
+
+    </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+
+        <div th:fragment="item(comentario)" class="card mb-2 border-0 bg-light">
+
+            <div class="card-body py-2">
+
+                <div class="d-flex justify-content-between flex-wrap">
+
+                    <strong th:if="${comentario.escritorComentario != null}"
+                            th:text="${comentario.escritorComentario.username}">
+                            usuario
+                    </strong>
+
+                    <small class="text-muted"
+                           th:text="${#temporals.format(comentario.fechaCreacion, 'dd/MM/yyyy HH:mm')}">
+                           fecha
+                    </small>
+                    
+                </div>
+
+                <p class="mb-0 mt-1" th:text="${comentario.contenido}">Contenido</p>
+
+            </div>
+
+        </div>
+
+    </body>
+</html>

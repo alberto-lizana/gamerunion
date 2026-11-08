@@ -1,5 +1,7 @@
 package com.segcaldessof.uniondegamers.service;
 
+import static com.segcaldessof.uniondegamers.config.ErroresConstantes.ROL_NO_ENCONTRADO;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -34,15 +36,15 @@ public class RolServiceImpl implements RolService {
     @Override
     public RolResponseDto obtenerPorId(Long id) {
         return RolMapper.toDto(rolRepository.findById(id)
-            .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado"))
+            .orElseThrow(() -> new RolNoEncontradoException(ROL_NO_ENCONTRADO))
         );
     }
 
     @Transactional
     @Override
     public RolResponseDto modificarNombre(RolNombreRequestDto dto) {
-        Rol rol = rolRepository.findById(dto.idRol())
-            .orElseThrow(() -> new RolNoEncontradoException("Rol no encontrado"));
+        Rol rol = rolRepository.findRolById(dto.idRol())
+            .orElseThrow(() -> new RolNoEncontradoException(ROL_NO_ENCONTRADO));
 
         rol.setNombre(dto.nombre());
 
@@ -50,10 +52,11 @@ public class RolServiceImpl implements RolService {
     }
 
 
+    @Transactional 
     @Override
     public void eliminar(Long id) {
         if(rolRepository.deleteByIdRol(id) == 0){
-            throw new RolNoEncontradoException("Rol no encontrado");
+            throw new RolNoEncontradoException(ROL_NO_ENCONTRADO);
         }
     }
 }

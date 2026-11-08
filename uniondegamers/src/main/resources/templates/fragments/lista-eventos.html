@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+
+        <div th:fragment="listaEventos"
+            th:attr="data-has-next=${paginaEventos.hasNext()}">
+
+            <div class="col-12 col-lg-4"
+                th:each="e : ${eventos}">
+
+                <div th:replace="~{fragments/evento-card :: card(${e}, @{/img/gamer_union_default.jpg})}">
+                </div>
+
+            </div>
+
+        </div>
+
+    </body>
+</html>

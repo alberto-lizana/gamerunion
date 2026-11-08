@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+
+<head>
+    <title>Eventos - Unión de Gamers</title>
+</head>
+
+<body>
+        <main class="container py-4">
+
+            <h1 class="mb-2">Eventos</h1>
+
+            <div class="row g-4">
+
+                <!-- PANEL DE ADMINISTRACIÓN -->
+                <aside class="col-12 col-md-3"
+                    sec:authorize="hasAnyRole('ADMINISTRADOR', 'MODERADOR')">
+
+                    <div class="card shadow-sm">
+
+                        <div class="card-body">
+
+                            <h5 class="mb-3">Administración</h5>
+
+                            <a th:href="@{/eventos/crear}" class="btn btn-primary w-100">
+                                <span class="fw-bold">+</span> 
+                                Crear evento
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+                <!-- LISTADO DE EVENTOS -->
+                <section class="col-12"
+                        th:classappend="${#authorization.expression('hasAnyRole(''ADMINISTRADOR'', ''MODERADOR'')')} ? 'col-md-9' : ''">
+
+                    <!-- TARJETAS -->
+                    <div class="row g-3" id="eventos-container">
+
+                        <div class="col-12 col-lg-4" th:each="e : ${eventos}">
+
+                            <div th:replace="~{fragments/evento-card :: card(${e}, @{/img/gamer_union_default.jpg})}"></div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- MENSAJE SIN EVENTOS -->
+                    <p class="text-muted mt-3"
+                       th:if="${#lists.isEmpty(eventos)}">
+                       Aún no hay eventos.
+                    </p>
+
+                    <!-- BOTÓN CARGAR MÁS -->
+                    <div class="text-center mt-4"
+                         th:if="${paginaEventos.hasNext()}">
+
+                        <button type="button"
+                                id="cargar-mas"
+                                class="btn btn-primary"
+                                th:attr="data-next-page=${paginaEventos.number + 1}">
+                                Cargar más eventos
+                        </button>
+                    </div>
+
+                </section>
+
+            </div>
+
+            <script th:src="@{/js/eventos.js}"></script>
+        </main>
+    </body>
+</html>

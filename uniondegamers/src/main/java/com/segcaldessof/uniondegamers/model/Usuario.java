@@ -46,7 +46,7 @@ public class Usuario {
     @Column(nullable = false, length = 50)
     private String appat;
 
-    @Column(unique = true, nullable = false, length = 250)
+    @Column(nullable = false, unique = true, length = 250)
     private String email;
 
     @Column (nullable = false)
@@ -54,6 +54,13 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<UsuarioRol> asignacionesRoles; 
+
+    @OneToMany(mappedBy = "autor")
+    private List<Evento> eventosEscritos; 
+
+    @OneToMany(mappedBy = "escritor")
+    private List<Comentario> comentarios;
+
 
     @PrePersist
     public void prePersist() {

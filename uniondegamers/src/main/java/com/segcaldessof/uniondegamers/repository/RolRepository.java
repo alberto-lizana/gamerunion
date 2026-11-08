@@ -31,6 +31,13 @@ public interface RolRepository extends JpaRepository<Rol,Long> {
 
     @Query
     ("""
+        SELECT r FROM Rol r
+        WHERE r.id = :rolId
+    """)
+    Optional<Rol> findRolById(@Param("rolId") Long rolId);
+
+    @Query
+    ("""
         SELECT r 
         FROM Rol r
     """)

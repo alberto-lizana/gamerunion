@@ -1,4 +1,4 @@
-package com.segcaldessof.uniondegamers.controller;
+package com.segcaldessof.uniondegamers.controller.restcontroller;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import com.segcaldessof.uniondegamers.service.RolService;
 import jakarta.validation.Valid;
 
 @RestController 
-@RequestMapping("/rol")
+@RequestMapping("/api/rol")
 public class RolController {
 
     private final RolService rolService;
@@ -37,15 +37,17 @@ public class RolController {
     ResponseEntity<RolResponseDto> obtener(@PathVariable Long id){
         return ResponseEntity.ok().body(rolService.obtenerPorId(id));
     }
-
-    @PatchMapping("/nombre")
+    
+    // Peligroso
+    @PatchMapping("/modificar-nombre")
     ResponseEntity<RolResponseDto> modificar(@Valid @RequestBody RolNombreRequestDto dto){
         return ResponseEntity.ok().body(rolService.modificarNombre(dto));
     }
 
+    // Peligroso
     @DeleteMapping("/borrar/{id}")
     ResponseEntity<Void> eliminar(@PathVariable Long id){
         rolService.eliminar(id);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -29,7 +29,10 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import tools.jackson.databind.ObjectMapper;
 
-import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.*;
+import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.CONTENT_TYPE;
+import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.HEADER_AUTHORIZATION;
+import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.PREFIX_TOKEN;
+import static com.segcaldessof.uniondegamers.security.TokenJwtConfig.SECRET_KEY;
 
 /*
     JwtAuthenticationFilter: 

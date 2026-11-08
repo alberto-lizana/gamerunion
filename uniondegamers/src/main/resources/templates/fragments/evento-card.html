@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <body>
+
+        <div th:fragment="card(evento, img)"
+             class="evt-wrap"
+             th:classappend="${!evento.isActive} ? ' evento-inactivo' : ''">
+
+            <div class="evt-card">
+
+                <!-- INFORMACIÓN DEL EVENTO -->
+                <a th:href="@{/eventos/{id}(id=${evento.id})}"
+                   class="text-decoration-none text-reset">
+
+                    <img th:src="${img}" 
+                         class="evt-img" 
+                         alt="Imagen del evento">
+
+                    <div class="evt-body">
+                        <p class="evt-title" 
+                           th:text="${evento.titulo}">
+                           Título
+                        </p>
+                        <p>📅
+                            <span th:text="${#temporals.format(evento.fechaInicioEvento, 'dd/MM/yyyy')}">
+                                  Fecha
+                            </span>
+                        </p>
+                        <p>🕒
+                            <span th:text="${#temporals.format(evento.fechaInicioEvento, 'HH:mm')}">
+                                  Inicio
+                            </span>
+                            <span th:if="${evento.fechaTerminoEvento != null}"
+                                  th:text="${'- ' + #temporals.format(evento.fechaTerminoEvento, 'HH:mm')}">
+                                  - Fin
+                            </span>
+                        </p>
+                        <p class="evt-region" 
+                           th:if="${evento.region != null}" 
+                           th:text="${evento.region.nombreSinGuiones()}">
+                           REGIÓN
+                        </p>
+                    </div>
+                </a>
+
+                <!-- ACCIONES DE ADMINISTRACIÓN -->
+                <div class="p-3 border-top" 
+                     sec:authorize="hasAnyRole('ADMINISTRADOR', 'MODERADOR')">
+
+                    <div class="d-flex gap-2">
+                        <a th:href="@{/eventos/modificar(eventoId=${evento.id})}"
+                           class="btn btn-outline-primary btn-sm">
+                           Modificar
+                        </a>
+
+                        <!-- BORRADO LÓGICO: EVENTO ACTIVO -->
+                        <form th:if="${evento.isActive}"
+                            th:action="@{/eventos/eliminar-logico-{id}(id=${evento.id})}"
+                            method="post"
+                            onsubmit="return confirm('¿Estás seguro de eliminar este evento?');">
+
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                Eliminar
+                            </button>
+                        </form>
+
+                        <!-- BORRADO FÍSICO: EVENTO INACTIVO -->
+                        <form th:unless="${evento.isActive}"
+                            th:action="@{/eventos/eliminar-fisico-{id}(id=${evento.id})}"
+                            method="post"
+                            onsubmit="return confirm('¿Eliminar definitivamente este evento? Esta acción no se puede deshacer.');">
+
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Eliminar
+                            </button>
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </body>
+</html>

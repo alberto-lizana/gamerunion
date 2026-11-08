@@ -1,0 +1,130 @@
+.login-form-container {
+    background:
+        linear-gradient(#212121, #212121) padding-box,
+        linear-gradient(120deg, transparent 15%, #1cb0ff, #40ff99) border-box;
+    border: 2px solid transparent;
+    padding: 35px 30px;
+    color: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.login-heading {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.login-subheading {
+    color: #9ca3af;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.login-form-group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.login-form-input {
+    width: 100%;
+    padding: 12px 10px;
+    color: white;
+    background: transparent;
+    border: 1px solid #414141;
+    border-radius: 6px;
+    outline: none;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-form-input:focus {
+    border-color: #1cb0ff;
+    box-shadow: 0 0 0 2px rgba(28, 176, 255, 0.12);
+}
+
+.login-form-group label {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    padding: 12px 5px;
+    color: #888;
+    pointer-events: none;
+    transition: 0.25s ease;
+    font-size: 14px;
+}
+
+.login-form-input:focus ~ label,
+.login-form-input:not(:placeholder-shown) ~ label {
+    top: -23px;
+    left: 5px;
+    padding: 0 5px;
+    color: #40ff99;
+    font-size: 12px;
+}
+
+.login-submit {
+    width: 100%;
+    padding: 11px;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background: linear-gradient(120deg, #087fc0, #087f66);
+    border: 1px solid transparent;
+    transition: 0.3s ease;
+}
+
+.login-submit:hover {
+    background: linear-gradient(120deg, #109cde, #0ba982);
+    box-shadow: 0 0 15px rgba(28, 176, 255, 0.25);
+    transform: translateY(-2px);
+    cursor: pointer;
+}
+
+.login-register {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
+    margin-top: 22px;
+}
+
+.login-register a {
+    color: #40ff99;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.login-register a:hover {
+    color: #1cb0ff;
+    text-decoration: underline;
+}
+
+.login-divider {
+    border-color: #414141;
+    margin: 25px 0 0;
+}
+
+@media (max-width: 576px) {
+    .login-form-container {
+        padding: 30px 22px;
+    }
+    .login-heading {
+        font-size: 23px;
+    }
+}

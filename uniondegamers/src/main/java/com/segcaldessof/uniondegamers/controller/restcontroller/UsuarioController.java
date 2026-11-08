@@ -1,9 +1,10 @@
-package com.segcaldessof.uniondegamers.controller;
+package com.segcaldessof.uniondegamers.controller.restcontroller;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,7 +21,7 @@ import com.segcaldessof.uniondegamers.service.UsuarioService;
 import jakarta.validation.Valid;
 
 @RestController 
-@RequestMapping("/usuario")
+@RequestMapping("/api/usuario")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -32,6 +33,11 @@ public class UsuarioController {
     @GetMapping("/obtener")
     ResponseEntity<List<UsuarioResponseDto>> obtener(){
         return ResponseEntity.ok().body(usuarioService.obtenerTodos());
+    }
+
+    @GetMapping("/perfil")
+    public ResponseEntity<UsuarioResponseDto> obtenerPerfil(Authentication authentication) {
+        return ResponseEntity.ok(usuarioService.obtenerPerfil(authentication.getName()));
     }
 
     @GetMapping("/obtener/{id}")
